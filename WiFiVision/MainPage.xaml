@@ -8,6 +8,22 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <ScrollViewer Grid.Row="1">
+            <Pivot Title="Pivot">
+                <PivotItem Header="PivotItem 0">
+                    <Grid/>
+                </PivotItem>
+                <PivotItem Header="Graph">
+                    <Grid>
+                        <TextBlock x:Name="textBlock" HorizontalAlignment="Center" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Bottom"/>
+                        <Canvas Name="myCanvas"  Margin="0,0,0,40"/>
+                    </Grid>
 
+                </PivotItem>
+                <PivotItem Header="PivotItem 2">
+                    <Grid/>
+                </PivotItem>
+            </Pivot>
+        </ScrollViewer>
     </Grid>
 </Page>
