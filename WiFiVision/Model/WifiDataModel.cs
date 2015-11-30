@@ -11,8 +11,8 @@ namespace WiFiVision.Model
     public class WifiDataModel
     {
         private WiFiAdapter adapter;
-        public String Ssid { get; set; }
-        public String Bssid { get; set; }
+        public String Ssid => string.Format("{0}", availableNetwork.Ssid);
+        public String Bssid => string.Format("{0}", availableNetwork.Bssid);
         public String ChannelCenterFrequency => string.Format("{0}kHz", availableNetwork.ChannelCenterFrequencyInKilohertz);
         public String Rssi => string.Format("{0}dBm", availableNetwork.NetworkRssiInDecibelMilliwatts);
         public String SecuritySettings => string.Format("Auth: {0}", availableNetwork.SecuritySettings.NetworkAuthenticationType, availableNetwork.SecuritySettings.NetworkEncryptionType);
