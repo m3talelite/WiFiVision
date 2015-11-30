@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WiFiVision.Model;
 using Windows.Devices.WiFi;
 using Windows.Foundation;
 using Windows.UI;
@@ -21,8 +22,6 @@ namespace WiFiVision
         int chartBoxLineThickness = 2;
         Color chartboxLineColor = Colors.Black;
 
-        public List<WiFiAvailableNetwork> networkList = new List<WiFiAvailableNetwork>();
-
         public ChartPlotter(Canvas activeCanvas, double x, double y, double width, double height)
         {
             this.activeCanvas = activeCanvas;
@@ -32,10 +31,13 @@ namespace WiFiVision
             this.height = height;
 
             drawBox();
+        }
 
-            foreach (WiFiAvailableNetwork network in this.networkList)
+        public void draw(List<WifiDataModel> networks)
+        {
+            foreach (WifiDataModel network in networks)
             {
-                drawCurve(network.Ssid, network.ChannelCenterFrequencyInKilohertz, network.NetworkRssiInDecibelMilliwatts);
+                drawCurve(network.Ssid, network.getChannelId(), network.AvailableNetwork.NetworkRssiInDecibelMilliwatts);
             }
         }
 
@@ -67,19 +69,25 @@ namespace WiFiVision
 
         private void drawCurve(String name, int channel, double amp)
         {
+            if (-1 == channel) //don't draw networks that are not on the band
+                return;
+
             double curveWidth = 100;
+            double channelWidth = curveWidth / 3;
 
-            int y = 0;
-            int x;
+            double y = this.y + this.height;
+            double x = this.x;
 
-            x = channel * 10;
+            x += channel * channelWidth;
+
+            System.Diagnostics.Debug.WriteLine("drawingCurve with CHannel:" + channel + "on x: " + x);
 
             Path path = new Path();
             PathFigure figure = new PathFigure();
             BezierSegment myBs = new BezierSegment();
 
             myBs.Point1 = new Point(x, y);
-            myBs.Point2 = new Point(x + curveWidth / 2, y - amp);
+            myBs.Point2 = new Point(x + curveWidth / 2, y + amp*10);
             myBs.Point3 = new Point(x + curveWidth, y);
 
             figure.Segments.Add(myBs);

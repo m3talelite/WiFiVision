@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using WiFiVision.Model;
+using Windows.Devices.WiFi;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI;
@@ -23,45 +27,57 @@ namespace WiFiVision
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        private WiFiAdapter Adapter;
+        public ObservableCollection<WifiDataModel> WifiCollection { get; private set; }
+
+        ChartPlotter cp;
+
         public MainPage()
         {
             this.InitializeComponent();
 
-            //drawWifiGraph();
+            WifiCollection = new ObservableCollection<WifiDataModel>();
 
-            ChartPlotter cp = new ChartPlotter(myCanvas, 100, 100, 400, 400);
-            
+            ScanForWifi();
+
+            cp = new ChartPlotter(myCanvas, 100, 100, 600, 600);
         }
 
-        private void drawWifiGraph()
+        private async void ScanForWifi()
         {
-            EllipseGeometry ellipse = new EllipseGeometry();
-            Path circle = new Path();
-            ellipse.Center = new Point(90, 300);
-            ellipse.RadiusX = 30;
-            ellipse.RadiusY = 90;
-            circle.Data = ellipse;
-            circle.Stroke = new SolidColorBrush(Colors.Blue);
-            circle.StrokeThickness = 5;
-            circle.Margin = new Thickness(10);
+            var access = await WiFiAdapter.RequestAccessAsync();
+            if (access != WiFiAccessStatus.Allowed)
+            {
+                System.Diagnostics.Debug.WriteLine("Access denied");
+                return;
+            }
+            DataContext = this;
+            var result = await Windows.Devices.Enumeration.DeviceInformation.FindAllAsync(WiFiAdapter.GetDeviceSelector());
+            if (result.Count > 0)
+            {
+                Adapter = await WiFiAdapter.FromIdAsync(result[0].Id);
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("No WiFiAdapters detected");
+                return;
+            }
+            await Adapter.ScanAsync();
 
-            myCanvas.Children.Add(circle);
+            FillWifiCollection(Adapter.NetworkReport);
+        }
 
-            // Drawing a cruve
+        private async void FillWifiCollection(WiFiNetworkReport networkReport)
+        {
+            WifiCollection.Clear();
+            for(int i = 0; i < networkReport.AvailableNetworks.Count; ++i)
+            {
+                var networkModel = new WifiDataModel(networkReport.AvailableNetworks[i], Adapter);
+                await networkModel.UpdateConnectivity();
+                WifiCollection.Add(networkModel);
+            }
 
-            LineGeometry line = new LineGeometry();
-            Path linePath = new Path();
-            line.StartPoint = new Point(200, 200);
-            line.EndPoint = new Point(600, 200);
-            linePath.Data = line;
-            linePath.Stroke = new SolidColorBrush(Colors.Black);
-            linePath.StrokeThickness = 1;
-
-            myCanvas.Children.Add(linePath);
-
-            //drawCurve(500,500, 400);
-            //drawCurve(540, 500, 400);
-            //drawCurve(550, 500, 700);
+            cp.draw(WifiCollection.ToList());
         }
     }
 }
