@@ -8,7 +8,7 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <ScrollViewer Grid.Row="1">
+        <ScrollViewer Grid.Row="0">
             <Pivot Title="Pivot">
                 <PivotItem Header="PivotItem 0">
                     <Grid/>
