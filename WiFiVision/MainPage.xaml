@@ -16,7 +16,7 @@
                 <PivotItem Header="Graph">
                     <Grid>
                         <TextBlock x:Name="textBlock" HorizontalAlignment="Center" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Bottom"/>
-                        <Canvas Name="myCanvas"  Margin="0,0,0,40"/>
+                        <Canvas x:Name="myCanvas"  Margin="0,0,0,40"/>
                     </Grid>
 
                 </PivotItem>
