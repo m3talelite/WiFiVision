@@ -29,7 +29,7 @@ namespace WiFiVision
 
             //drawWifiGraph();
 
-            ChartPlotter cp = new ChartPlotter(myCanvas, 400, 500, 400, 400);
+            ChartPlotter cp = new ChartPlotter(myCanvas, 100, 100, 400, 400);
             
         }
 
@@ -59,33 +59,9 @@ namespace WiFiVision
 
             myCanvas.Children.Add(linePath);
 
-            drawCurve(500,500, 400);
-            drawCurve(540, 500, 400);
-            drawCurve(550, 500, 700);
-        }
-
-        private void drawCurve(double x , double y, double amp)
-        {
-            double curveWidth = 100;
-
-            Path path = new Path();
-            PathFigure figure = new PathFigure();
-            BezierSegment myBs = new BezierSegment();
-
-            myBs.Point1 = new Point(x, y);
-            myBs.Point2 = new Point(x+ curveWidth/2, y- amp);
-            myBs.Point3 = new Point(x+ curveWidth, y);
-
-            figure.Segments.Add(myBs);
-            figure.StartPoint = new Point(x, y); //WUT?!
-
-            PathGeometry myPath = new PathGeometry();
-            myPath.Figures.Add(figure);
-            path.Data = myPath;
-            path.Stroke = new SolidColorBrush(Colors.Red);
-            path.StrokeThickness = 2;
-
-            myCanvas.Children.Add(path);
+            //drawCurve(500,500, 400);
+            //drawCurve(540, 500, 400);
+            //drawCurve(550, 500, 700);
         }
     }
 }
