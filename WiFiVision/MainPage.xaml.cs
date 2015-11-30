@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using WiFiVision.Model;
+using Windows.Devices.WiFi;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -22,9 +25,50 @@ namespace WiFiVision
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        private WiFiAdapter Adapter;
+        public ObservableCollection<WifiDataModel> WifiCollection { get; private set; }
+
         public MainPage()
         {
             this.InitializeComponent();
+            WifiCollection = new ObservableCollection<WifiDataModel>();
+
+            ScanForWifi();
+        }
+
+        private async void ScanForWifi()
+        {
+            var access = await WiFiAdapter.RequestAccessAsync();
+            if (access != WiFiAccessStatus.Allowed)
+            {
+                System.Diagnostics.Debug.WriteLine("Access denied");
+                return;
+            }
+            DataContext = this;
+            var result = await Windows.Devices.Enumeration.DeviceInformation.FindAllAsync(WiFiAdapter.GetDeviceSelector());
+            if (result.Count > 0)
+            {
+                Adapter = await WiFiAdapter.FromIdAsync(result[0].Id);
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("No WiFiAdapters detected");
+                return;
+            }
+            await Adapter.ScanAsync();
+
+            FillWifiCollection(Adapter.NetworkReport);
+        }
+
+        private async void FillWifiCollection(WiFiNetworkReport networkReport)
+        {
+            WifiCollection.Clear();
+            for(int i = 0; i < networkReport.AvailableNetworks.Count; ++i)
+            {
+                var networkModel = new WifiDataModel(networkReport.AvailableNetworks[i], Adapter);
+                await networkModel.UpdateConnectivity();
+                WifiCollection.Add(networkModel);
+            }
         }
     }
 }
