@@ -19,6 +19,8 @@ namespace WiFiVision
 
         double x, y, width, height;
 
+        int channelSpaces = 15;
+
         int chartBoxLineThickness = 2;
         Color chartboxLineColor = Colors.Black;
 
@@ -69,6 +71,21 @@ namespace WiFiVision
 
                 this.activeCanvas.Children.Add(textBlock);
             }
+
+            //draw channel numbers
+            for (int i = -1; i < 14; i++)
+            {
+                double channelWidth = this.width / channelSpaces;
+
+                double offset = 2 * channelWidth;
+                Point startPoint = new Point(x + offset + (channelWidth) * i, y + this.height + 20);
+
+                TextBlock textBlock = new TextBlock();
+                textBlock.Text = i.ToString();
+                Canvas.SetLeft(textBlock, startPoint.X - 30);
+                Canvas.SetTop(textBlock, startPoint.Y - 10);
+                this.activeCanvas.Children.Add(textBlock);
+            }
         }
 
         private void drawLine(Point point1, Point point2, int lineThickness, Color strokeColor)
@@ -89,13 +106,13 @@ namespace WiFiVision
             if (-1 == channel) //don't draw networks that are not on the band
                 return;
 
-            double channelWidth = this.width / 16;
-            double curveWidth = channelWidth * 3;
+            double channelWidth = this.width / channelSpaces;
+            double curveWidth = channelWidth * 4;
 
             double y = this.y + this.height;
             double x = this.x;
 
-            x += channel * channelWidth;
+            x += (channel -1) * channelWidth;
 
             System.Diagnostics.Debug.WriteLine("drawingCurve with CHannel:" + channel + " on x: " + x);
             System.Diagnostics.Debug.WriteLine("With Amplitude: " + amp);
