@@ -52,6 +52,23 @@ namespace WiFiVision
             drawLine(new Point(x + this.width, y), new Point(x + this.width, y + this.height), lt, color);
             drawLine(new Point(x + this.width, y + this.height), new Point(x, y + this.height), lt, color);
             drawLine(new Point(x, y + this.height), new Point(x, y), lt, color);
+
+            for (int i = 30; i < 100; i += 10)
+            {
+                //draw amplines
+                double amplitude = -i;
+                double lineY = y + ((amplitude + 100.0) / 80.0) * this.height;
+                Point startPoint = new Point(x, lineY);
+                Point endPoint = new Point(x + width, lineY);
+                drawLine(startPoint,endPoint, 1, Colors.Gray);
+
+                TextBlock textBlock = new TextBlock();
+                textBlock.Text = amplitude.ToString();
+                Canvas.SetLeft(textBlock, startPoint.X - 30);
+                Canvas.SetTop(textBlock, startPoint.Y - 10);
+
+                this.activeCanvas.Children.Add(textBlock);
+            }
         }
 
         private void drawLine(Point point1, Point point2, int lineThickness, Color strokeColor)
@@ -80,7 +97,8 @@ namespace WiFiVision
 
             x += channel * channelWidth;
 
-            System.Diagnostics.Debug.WriteLine("drawingCurve with CHannel:" + channel + "on x: " + x);
+            System.Diagnostics.Debug.WriteLine("drawingCurve with CHannel:" + channel + " on x: " + x);
+            System.Diagnostics.Debug.WriteLine("With Amplitude: " + amp);
 
             Path path = new Path();
             PathFigure figure = new PathFigure();
@@ -88,7 +106,8 @@ namespace WiFiVision
 
             double channelAmplitude = ((amp - 100) / 80) * this.height;
             myBs.Point1 = new Point(x, y);
-            myBs.Point2 = new Point(x + curveWidth / 2, y + channelAmplitude);
+            Point curveTop = new Point(x + curveWidth / 2, y + channelAmplitude);
+            myBs.Point2 = curveTop;
             myBs.Point3 = new Point(x + curveWidth, y);
 
             figure.Segments.Add(myBs);
@@ -101,6 +120,21 @@ namespace WiFiVision
             path.StrokeThickness = 2;
 
             this.activeCanvas.Children.Add(path);
+
+            TextBlock textBlock = new TextBlock();
+            if (null != name)
+            {
+                textBlock.Text = name;
+                    }
+            else
+            {
+                textBlock.Text = "NULL";
+                    }
+
+            Canvas.SetLeft(textBlock, curveTop.X);
+            Canvas.SetTop(textBlock, y + curveTop.Y);
+
+            this.activeCanvas.Children.Add(textBlock);
         }
     }
 }

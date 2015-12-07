@@ -40,7 +40,7 @@ namespace WiFiVision
 
             ScanForWifi();
 
-            cp = new ChartPlotter(myCanvas, 100, 100, 300, 300);
+            cp = new ChartPlotter(myCanvas, 100, 100, 600, 600);
         }
 
         private async void ScanForWifi()
