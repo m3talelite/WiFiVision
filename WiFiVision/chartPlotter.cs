@@ -33,6 +33,7 @@ namespace WiFiVision
             this.height = height;
 
             drawBox();
+            DrawLine();
         }
 
         public void draw(List<WifiDataModel> networks)
@@ -108,6 +109,39 @@ namespace WiFiVision
             linePath.StrokeThickness = lineThickness;
 
             activeCanvas.Children.Add(linePath);
+        }
+
+        private void DrawLine()
+        {
+            int amp = -90;
+            double channelWidth = this.width / channelSpaces;
+            double channelAmplitude = ((amp + 100) / 80) * this.height;
+
+            Point[] points = new Point[3];
+            points[0] = new Point(0, 20);
+            points[1] = new Point(10, 0);
+            points[2] = new Point(20, 20);
+
+            int i;
+            int count = (int)20;
+
+            int xOffset = 500;
+            for (i = -count; i < count - 1; i++)
+            {
+                double x1 = i;
+                double y1 = (i - points[1].X) * (i - points[2].X) / (points[0].X - points[1].X) * (points[0].X - points[2].X) * points[0].Y +
+                            (i - points[0].X) * (i - points[2].X) / (points[1].X - points[0].X) * (points[1].X - points[2].X) * points[1].Y +
+                            (i - points[0].X) * (i - points[1].X) / (points[2].X - points[0].X) * (points[2].X - points[1].X) * points[2].Y;
+
+                Point p1 = new Point(x1, y1);
+
+                double x2 = i + 1;
+                double y2 = (i + 1 - points[1].X) * (i + 1 - points[2].X) / (points[0].X - points[1].X) * (points[0].X - points[2].X) * points[0].Y +
+                            (i + 1 - points[0].X) * (i + 1 - points[2].X) / (points[1].X - points[0].X) * (points[1].X - points[2].X) * points[1].Y +
+                            (i + 1 - points[0].X) * (i + 1 - points[1].X) / (points[2].X - points[0].X) * (points[2].X - points[1].X) * points[2].Y;
+                Point p2 = new Point(x2, y2);
+                drawLine(p1, p2, 1, Colors.Blue);
+            }
         }
 
         private void drawCurve(String name, int channel, double amp)
