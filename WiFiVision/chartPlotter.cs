@@ -37,7 +37,7 @@ namespace WiFiVision
         {
             foreach (WifiDataModel network in networks)
             {
-                drawCurve(network.Ssid, network.getChannelId(), network.AvailableNetwork.NetworkRssiInDecibelMilliwatts);
+                drawCurve(network.Ssid, network.getChannel(), network.AvailableNetwork.NetworkRssiInDecibelMilliwatts);
             }
         }
 
@@ -72,8 +72,8 @@ namespace WiFiVision
             if (-1 == channel) //don't draw networks that are not on the band
                 return;
 
-            double curveWidth = 100;
-            double channelWidth = curveWidth / 3;
+            double channelWidth = this.width / 16;
+            double curveWidth = channelWidth * 3;
 
             double y = this.y + this.height;
             double x = this.x;
@@ -86,8 +86,9 @@ namespace WiFiVision
             PathFigure figure = new PathFigure();
             BezierSegment myBs = new BezierSegment();
 
+            double channelAmplitude = ((amp - 100) / 80) * this.height;
             myBs.Point1 = new Point(x, y);
-            myBs.Point2 = new Point(x + curveWidth / 2, y + amp*10);
+            myBs.Point2 = new Point(x + curveWidth / 2, y + channelAmplitude);
             myBs.Point3 = new Point(x + curveWidth, y);
 
             figure.Segments.Add(myBs);

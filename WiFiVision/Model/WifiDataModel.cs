@@ -26,23 +26,23 @@ namespace WiFiVision.Model
             private set { availableNetwork = value; }
         }
 
-        public int getChannelId()
+        public int getChannel()
         {
-            int channelfrequency = Int32.Parse(ChannelCenterFrequency.Substring(0, 4));
+            int freq = Int32.Parse(ChannelCenterFrequency.Substring(0, 4));
 
-            int[] frequencies = {0, 2412, 2417, 2422, 2427, 2432, 2437, 2442, 2447, 2452, 2457, 2462, 2467, 2472, 2484};
-            List<int> channelList = new List<int>(frequencies);
-
-            int result = channelList.IndexOf(channelfrequency);
-
-            if(-1 == result)
+            if (freq >= 2412 && freq <= 2484)
             {
-                System.Diagnostics.Debug.WriteLine("getting wifiChannel from network failed");
-                System.Diagnostics.Debug.WriteLine("channelcenterFrequency.substring: " + ChannelCenterFrequency.Substring(0, 4));
+                return (freq - 2412) / 5 + 1;
             }
-
-            return result;
-        }
+            else if (freq >= 5170 && freq <= 5825)
+            {
+                return (freq - 5170) / 5 + 34;
+            }
+            else
+            {
+                return -1;
+            }
+    }
 
         public WifiDataModel(WiFiAvailableNetwork avNetwork, WiFiAdapter adapter)
         {
