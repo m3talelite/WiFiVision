@@ -19,7 +19,7 @@ namespace WiFiVision
 
         double x, y, width, height;
 
-        int channelSpaces = 15;
+        int channelSpaces = 16;
 
         int chartBoxLineThickness = 2;
         Color chartboxLineColor = Colors.Black;
@@ -73,17 +73,26 @@ namespace WiFiVision
             }
 
             //draw channel numbers
-            for (int i = -1; i < 14; i++)
+            for (int i = 1; i < 14; i++)
             {
                 double channelWidth = this.width / channelSpaces;
 
-                double offset = 2 * channelWidth;
-                Point startPoint = new Point(x + offset + (channelWidth) * i, y + this.height + 20);
+                double offset = 1 * channelWidth;
+
+                //drawing of channel number numberline number
+                Point startPoint = new Point(x + offset + (channelWidth) * i, y + this.height);
+                Point endPoint = new Point(startPoint.X, startPoint.Y + 10);
+                drawLine(startPoint, endPoint, 1, Colors.Black);
+
+                //drawing of channel number
+                Point channelNumberPoint = new Point(x + offset + (channelWidth) * i, y + this.height + 20);
 
                 TextBlock textBlock = new TextBlock();
                 textBlock.Text = i.ToString();
-                Canvas.SetLeft(textBlock, startPoint.X - 30);
-                Canvas.SetTop(textBlock, startPoint.Y - 10);
+                double guestimatedLabelWidth = 8 * i.ToString().Length;
+                Canvas.SetLeft(textBlock, channelNumberPoint.X - guestimatedLabelWidth / 2);
+                Canvas.SetTop(textBlock, channelNumberPoint.Y - 10);
+
                 this.activeCanvas.Children.Add(textBlock);
             }
         }
