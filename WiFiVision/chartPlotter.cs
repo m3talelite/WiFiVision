@@ -34,6 +34,14 @@ namespace WiFiVision
 
             drawBox();
             DrawLine();
+            //drawCurve("2: -90", 2, -90);
+            //drawCurve("4: -80", 4, -80);
+            //drawCurve("6: -70", 6, -70);
+            //drawCurve("8: -60", 8, -60);
+            //drawCurve("10: -50", 10, -50);
+            //drawCurve("12: -40", 12, -40);
+            //drawCurve("3: -30", 3, -30);
+            //drawCurve("7: -20", 7, -20);
         }
 
         public void draw(List<WifiDataModel> networks)
@@ -60,7 +68,7 @@ namespace WiFiVision
             {
                 //draw amplines
                 double amplitude = -i;
-                double lineY = y + ((amplitude + 100.0) / 80.0) * this.height;
+                double lineY = y + this.height - ((amplitude + 100.0) / 80.0) * this.height;
                 Point startPoint = new Point(x, lineY);
                 Point endPoint = new Point(x + width, lineY);
                 drawLine(startPoint,endPoint, 1, Colors.Gray);
@@ -164,10 +172,15 @@ namespace WiFiVision
             PathFigure figure = new PathFigure();
             BezierSegment myBs = new BezierSegment();
 
-            double channelAmplitude = ((amp - 100) / 80) * this.height;
+            double channelAmplitude = 1.12* ( ((amp + 100) / 80) * this.height );
             myBs.Point1 = new Point(x, y);
-            Point curveTop = new Point(x + curveWidth / 2, y + channelAmplitude);
-            myBs.Point2 = curveTop;
+            Point curveTop = new Point(x + curveWidth / 2, y - channelAmplitude);
+            //calculation of line heights on amplitude scale
+            //                double lineY = y + this.height - ((amplitude + 100.0) / 80.0) * this.height;
+            //P(t) = P0*t^2 + P1*2*t*(1-t) + P2*(1-t)^2 //http://stackoverflow.com/questions/6711707/draw-a-quadratic-b%C3%A9zier-curve-through-three-given-points
+            double controlX = 2 * (x + curveWidth / 2) - x / 2 - (x + curveWidth) / 2;
+            double controlY = 2 * (curveTop.Y) - y / 2 - y / 2;
+            myBs.Point2 = new Point(controlX, controlY);
             myBs.Point3 = new Point(x + curveWidth, y);
 
             figure.Segments.Add(myBs);
@@ -192,7 +205,7 @@ namespace WiFiVision
                     }
 
             Canvas.SetLeft(textBlock, curveTop.X);
-            Canvas.SetTop(textBlock, y + curveTop.Y);
+            Canvas.SetTop(textBlock, curveTop.Y);
 
             this.activeCanvas.Children.Add(textBlock);
         }
