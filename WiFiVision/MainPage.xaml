@@ -51,7 +51,12 @@
                     <PivotItem.Header>
                         <local:PivotHeader TabText="Dashboard" TabSymbol="Admin"/>
                     </PivotItem.Header>
-                    <Grid/>
+                    <Grid>
+                        <RelativePanel x:Name="dashboardPanel" HorizontalAlignment="Left" VerticalAlignment="Top">
+                            <Canvas x:Name="myLittleCanvas" HorizontalAlignment="Left" VerticalAlignment="Top" Width="{Binding ActualWidth, ElementName=dashboardPanel}"/>
+                            <ListView x:Name="listView" HorizontalAlignment="Left" Height="0" VerticalAlignment="Top"/>
+                        </RelativePanel>
+                    </Grid>
                 </PivotItem>
                 <PivotItem>
                     <PivotItem.Header>
