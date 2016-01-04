@@ -8,6 +8,7 @@ using WiFiVision.Model;
 using Windows.Devices.WiFi;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -15,6 +16,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Windows.UI.Xaml.Shapes;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -28,12 +30,17 @@ namespace WiFiVision
         private WiFiAdapter Adapter;
         public ObservableCollection<WifiDataModel> WifiCollection { get; private set; }
 
+        ChartPlotter cp;
+
         public MainPage()
         {
             this.InitializeComponent();
+
             WifiCollection = new ObservableCollection<WifiDataModel>();
 
             ScanForWifi();
+
+            cp = new ChartPlotter(myCanvas, 15, 15, 400, 400);
         }
 
         private async void ScanForWifi()
@@ -69,6 +76,8 @@ namespace WiFiVision
                 await networkModel.UpdateConnectivity();
                 WifiCollection.Add(networkModel);
             }
+
+            cp.draw(WifiCollection.ToList());
         }
     }
 }

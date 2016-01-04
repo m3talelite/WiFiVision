@@ -22,9 +22,27 @@ namespace WiFiVision.Model
 
         private WiFiAvailableNetwork availableNetwork;
         public WiFiAvailableNetwork AvailableNetwork
-        {   get { return availableNetwork; }
+        { get { return availableNetwork; }
             private set { availableNetwork = value; }
         }
+
+        public int getChannel()
+        {
+            int freq = Int32.Parse(ChannelCenterFrequency.Substring(0, 4));
+
+            if (freq >= 2412 && freq <= 2484)
+            {
+                return (freq - 2412) / 5 + 1;
+            }
+            else if (freq >= 5170 && freq <= 5825)
+            {
+                return (freq - 5170) / 5 + 34;
+            }
+            else
+            {
+                return -1;
+            }
+    }
 
         public WifiDataModel(WiFiAvailableNetwork avNetwork, WiFiAdapter adapter)
         {
