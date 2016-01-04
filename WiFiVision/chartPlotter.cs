@@ -24,6 +24,8 @@ namespace WiFiVision
         int chartBoxLineThickness = 2;
         Color chartboxLineColor = Colors.Black;
 
+        Color[] notRandomColors = { Colors.Red, Colors.Blue, Colors.Green, Colors.Khaki, Colors.Ivory, Colors.MediumTurquoise, Colors.Tomato, Colors.Tan };
+
         public ChartPlotter(Canvas activeCanvas, double x, double y, double width, double height)
         {
             this.activeCanvas = activeCanvas;
@@ -33,15 +35,14 @@ namespace WiFiVision
             this.height = height;
 
             drawBox();
-            DrawLine();
-            //drawCurve("2: -90", 2, -90);
-            //drawCurve("4: -80", 4, -80);
-            //drawCurve("6: -70", 6, -70);
-            //drawCurve("8: -60", 8, -60);
-            //drawCurve("10: -50", 10, -50);
-            //drawCurve("12: -40", 12, -40);
-            //drawCurve("3: -30", 3, -30);
-            //drawCurve("7: -20", 7, -20);
+            drawCurve("2: -90", 2, -90);
+            drawCurve("4: -80", 4, -80);
+            drawCurve("6: -70", 6, -70);
+            drawCurve("8: -60", 8, -60);
+            drawCurve("10: -50", 10, -50);
+            drawCurve("12: -40", 12, -40);
+            drawCurve("3: -30", 3, -30);
+            drawCurve("7: -20", 7, -20);
         }
 
         public void draw(List<WifiDataModel> networks)
@@ -189,12 +190,13 @@ namespace WiFiVision
             PathGeometry myPath = new PathGeometry();
             myPath.Figures.Add(figure);
             path.Data = myPath;
-            path.Stroke = new SolidColorBrush(Colors.Red);
+            path.Stroke = new SolidColorBrush(notRandomColors[channel % notRandomColors.Count()]);
             path.StrokeThickness = 2;
 
             this.activeCanvas.Children.Add(path);
 
             TextBlock textBlock = new TextBlock();
+            textBlock.Foreground = new SolidColorBrush(notRandomColors[channel % notRandomColors.Count()]);
             if (null != name)
             {
                 textBlock.Text = name;
@@ -203,6 +205,11 @@ namespace WiFiVision
             {
                 textBlock.Text = "NULL";
                     }
+
+            if (curveTop.Y < this.x)
+            {
+                curveTop.Y = this.x;
+            }
 
             Canvas.SetLeft(textBlock, curveTop.X);
             Canvas.SetTop(textBlock, curveTop.Y);
