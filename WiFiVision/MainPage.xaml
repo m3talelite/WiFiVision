@@ -16,8 +16,8 @@
                     <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="7*"/>
                 </Grid.ColumnDefinitions>
                 <!-- Left Side -->
                 <Border Grid.Column="0" Grid.Row="0" Padding="5" VerticalAlignment="top" HorizontalAlignment="Left" BorderThickness="1,1,1,1" BorderBrush="Black">
@@ -37,7 +37,10 @@
                     </StackPanel>
                 </Border>
                 <Border Grid.Column="1" Grid.Row="1" BorderBrush="Black" Padding="5" BorderThickness="1">
-                    <TextBlock Text="{x:Bind SignalStrength}"/> 
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{x:Bind WifiChannel}"/>
+                        <TextBlock Text="{x:Bind Rssi}" Padding="8,0,0,0"/>
+                    </StackPanel>
                 </Border>
                 <!-- End of Right Side -->
             </Grid>
@@ -51,7 +54,16 @@
                     <PivotItem.Header>
                         <local:PivotHeader TabText="Dashboard" TabSymbol="Admin"/>
                     </PivotItem.Header>
-                    <Grid/>
+                    <StackPanel Orientation="Vertical">
+                        <ListView x:Name="DashboardWifiListView" ItemTemplate="{StaticResource WifiItemListViewTemplate}" ItemsSource="{x:Bind WifiCollection}" HorizontalContentAlignment="Stretch" >
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                            </ListView>
+
+                    </StackPanel>
                 </PivotItem>
                 <PivotItem>
                     <PivotItem.Header>
