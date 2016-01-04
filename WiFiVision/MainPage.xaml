@@ -20,7 +20,7 @@
                     <ColumnDefinition Width="2*"/>
                 </Grid.ColumnDefinitions>
                 <!-- Left Side -->
-                <Border Grid.Column="0" Grid.Row="0" Width="32" Height="32" Padding="5" VerticalAlignment="top" HorizontalAlignment="Left" BorderThickness="1,1,1,1" BorderBrush="Black">
+                <Border Grid.Column="0" Grid.Row="0" Padding="5" VerticalAlignment="top" HorizontalAlignment="Left" BorderThickness="1,1,1,1" BorderBrush="Black">
                     <!-- <Image Source="{x:Bind WifiImage}" Stretch="UniformToFill"/> -->
                 </Border>
                 <Border Grid.Column="0" Grid.Row="1" BorderBrush="Black" BorderThickness="1" Padding="5">

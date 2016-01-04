@@ -6,12 +6,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Height="64" Width="64" IsTabStop="False">
-
+    Height="64" Width="128" IsTabStop="False">
     <StackPanel Orientation="Vertical">
         <SymbolIcon x:Name="_SI" Symbol="{Binding TabSymbol}"></SymbolIcon>
-        <TextBlock x:Name="_TB" Text="{Binding TabText}"></TextBlock>
-        
+        <TextBlock x:Name="_TB" Text="{Binding TabText}" HorizontalAlignment="Center"></TextBlock>
     </StackPanel>
-    
 </UserControl>

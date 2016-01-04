@@ -18,7 +18,7 @@ namespace WiFiVision.Model
         public String SecuritySettings => string.Format("Auth: {0}", availableNetwork.SecuritySettings.NetworkAuthenticationType, availableNetwork.SecuritySettings.NetworkEncryptionType);
         public String ConnectivityLevel { get; set; }
         public BitmapImage WiFiImage { get; set; }
-        public String SignalStrength => string.Format("Bars: {0}", availableNetwork.SignalBars);
+        public String SignalStrength => string.Format("{0} dB", availableNetwork.NetworkRssiInDecibelMilliwatts);
 
         private WiFiAvailableNetwork availableNetwork;
         public WiFiAvailableNetwork AvailableNetwork
