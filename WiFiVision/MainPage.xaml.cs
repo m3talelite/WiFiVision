@@ -115,10 +115,10 @@ namespace WiFiVision
             var scaleFactor = DisplayInformation.GetForCurrentView().RawPixelsPerViewPixel;
             var size = new Size(bounds.Width * scaleFactor, bounds.Height * scaleFactor);
 
-            cp = new ChartPlotter(myCanvas, 20, 15, size.Width * 0.7, size.Height * 0.65);
+            cp = new ChartPlotter(myCanvas, 20, 15, size.Width * 0.7, size.Height * 0.65, true);
             cp.draw(WifiCollection.ToList());
 
-            cpDashboard = new ChartPlotter(myLittleCanvas, 20, 15, size.Width * 0.7, size.Height * 0.3 * 0.6);
+            cpDashboard = new ChartPlotter(myLittleCanvas, 20, 15, size.Width * 0.7, size.Height * 0.3 * 0.6, false);
             cpDashboard.draw(WifiCollection.ToList());
         }
 

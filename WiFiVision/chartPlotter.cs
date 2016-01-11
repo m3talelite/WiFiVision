@@ -27,13 +27,17 @@ namespace WiFiVision
         Color[] notRandomColors = { Colors.Red, Colors.Blue, Colors.Green, Colors.Khaki, Colors.Teal, Colors.MediumTurquoise, Colors.Tomato, Colors.Tan };
         int colorIndex = 0;
 
-        public ChartPlotter(Canvas activeCanvas, double x, double y, double width, double height)
+        public bool hideLabels = false;
+
+        public ChartPlotter(Canvas activeCanvas, double x, double y, double width, double height, bool displayLabels)
         {
             this.activeCanvas = activeCanvas;
             this.x = x;
             this.y = y;
             this.width = width;
             this.height = height;
+
+            this.hideLabels = !displayLabels;
 
             drawBox();
             //drawCurve("2: -90", 2, -90);
@@ -110,25 +114,28 @@ namespace WiFiVision
 
                 this.activeCanvas.Children.Add(textBlock);
 
-                if (1 == i)
+                if (1 == i && true != hideLabels)
                 {
                     TextBlock channeltb = new TextBlock();
                     channeltb.Text = "Channel";
-                    double guestimatedChannelLabelWidth = 7 * channeltb.ToString().Length;
+                    double guestimatedChannelLabelWidth = 4 * channeltb.ToString().Length;
                     Canvas.SetLeft(channeltb, channelNumberPoint.X - guestimatedChannelLabelWidth / 2);
                     Canvas.SetTop(channeltb, channelNumberPoint.Y - 10);
                     this.activeCanvas.Children.Add(channeltb);
                 }
             }
 
-            TextBlock tb = new TextBlock();
-            tb.Text = "dBm";
-            RotateTransform rt = new RotateTransform();
-            rt.Angle = -90;
-            tb.RenderTransform = rt;
-            Canvas.SetLeft(tb, p.X);
-            Canvas.SetTop(tb, p.Y);
-            this.activeCanvas.Children.Add(tb);
+            if (true != hideLabels)
+            {
+                TextBlock tb = new TextBlock();
+                tb.Text = "dBm";
+                RotateTransform rt = new RotateTransform();
+                rt.Angle = -90;
+                tb.RenderTransform = rt;
+                Canvas.SetLeft(tb, p.X);
+                Canvas.SetTop(tb, p.Y);
+                this.activeCanvas.Children.Add(tb);
+            }
 
         }
 
