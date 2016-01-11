@@ -36,14 +36,14 @@ namespace WiFiVision
             this.height = height;
 
             drawBox();
-            drawCurve("2: -90", 2, -90);
-            drawCurve("4: -80", 4, -80);
-            drawCurve("6: -70", 6, -70);
-            drawCurve("8: -60", 8, -60);
-            drawCurve("10: -50", 10, -50);
-            drawCurve("12: -40", 12, -40);
-            drawCurve("3: -30", 3, -30);
-            drawCurve("7: -20", 7, -20);
+            //drawCurve("2: -90", 2, -90);
+            //drawCurve("4: -80", 4, -80);
+            //drawCurve("6: -70", 6, -70);
+            //drawCurve("8: -60", 8, -60);
+            //drawCurve("10: -50", 10, -50);
+            //drawCurve("12: -40", 12, -40);
+            //drawCurve("3: -30", 3, -30);
+            //drawCurve("7: -20", 7, -20);
         }
 
         public void draw(List<WifiDataModel> networks)

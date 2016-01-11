@@ -8,7 +8,9 @@ using WiFiVision.Model;
 using Windows.Devices.WiFi;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Graphics.Display;
 using Windows.UI;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -40,10 +42,6 @@ namespace WiFiVision
             WifiCollection = new ObservableCollection<WifiDataModel>();
 
             ScanForWifi();
-
-            cp = new ChartPlotter(myCanvas, 20, 15, 400, 400);
-
-            cpDashboard = new ChartPlotter(myLittleCanvas, 20, 15, 370, 250);
         }
 
         private async void ScanForWifi()
@@ -80,7 +78,21 @@ namespace WiFiVision
                 WifiCollection.Add(networkModel);
             }
 
+            drawGraphs(WifiCollection);
+        }
+
+        private async void drawGraphs(ObservableCollection<WifiDataModel> WifiCollection)
+        {
+            var bounds = ApplicationView.GetForCurrentView().VisibleBounds;
+            var scaleFactor = DisplayInformation.GetForCurrentView().RawPixelsPerViewPixel;
+            var size = new Size(bounds.Width * scaleFactor, bounds.Height * scaleFactor);
+
+
+            cp = new ChartPlotter(myCanvas, 20, 15, size.Width * 0.95, size.Height * 0.8);
             cp.draw(WifiCollection.ToList());
+
+            cpDashboard = new ChartPlotter(myLittleCanvas, 20, 15, size.Width * 0.95, size.Height / 3);
+            cpDashboard.draw(WifiCollection.ToList());
         }
     }
 }
