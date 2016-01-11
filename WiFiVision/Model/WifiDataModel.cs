@@ -22,6 +22,7 @@ namespace WiFiVision.Model
         public String WifiImagePath { get; set; }
         public String SignalStrength => string.Format("{0} bars ", availableNetwork.SignalBars);
         public String WifiChannel => string.Format("Channel: {0} ", getChannel());
+        public String Channel => string.Format("{0}", getChannel());
         public Symbol BarsInSymbol
         {
             get {

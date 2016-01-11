@@ -42,10 +42,6 @@ namespace WiFiVision
             WifiCollection = new ObservableCollection<WifiDataModel>();
 
             ScanForWifi();
-
-            cp = new ChartPlotter(myCanvas, 20, 15, 400, 400);
-
-            cpDashboard = new ChartPlotter(myLittleCanvas, 20, 15, 370, 250);
         }
 
         private async void ScanForWifi()
@@ -113,8 +109,24 @@ namespace WiFiVision
             cp = new ChartPlotter(myCanvas, 20, 15, size.Width * 0.95, size.Height * 0.8);
             cp.draw(WifiCollection.ToList());
 
-            cpDashboard = new ChartPlotter(myLittleCanvas, 20, 15, size.Width * 0.95, size.Height / 3);
+            cpDashboard = new ChartPlotter(myLittleCanvas, 20, 15, size.Width * 0.85, size.Height / 3);
             cpDashboard.draw(WifiCollection.ToList());
+        }
+
+        private void TextBlockHeader_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            if(sender.GetType() == typeof(TextBlock))
+            {
+                var block = sender as TextBlock;
+                if (block.Text.Equals("Available networks"))
+                {
+                    pivot.SelectedIndex = 2;
+                }
+                else if (block.Text.Equals("Network charts"))
+                {
+                    pivot.SelectedIndex = 1;
+                }
+            }
         }
     }
 }

@@ -49,7 +49,7 @@
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <ScrollViewer Grid.Row="0">
-            <Pivot Title="Pivot">
+            <Pivot x:Name="pivot">
                 <PivotItem>
                     <PivotItem.Header>
                         <local:PivotHeader TabText="Dashboard" TabSymbol="Admin"/>
@@ -57,33 +57,50 @@
                     <!-- Dashboard -->
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="*" />
+                            <RowDefinition Height="auto" />
                             <RowDefinition Height="*" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
                         <StackPanel Grid.Row="0" Orientation="Vertical" Margin="16,4,4,16">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Ssid: "/>
-                                <TextBlock Text="{Binding Path=WifiCollection[0].Ssid}"></TextBlock>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Bssid: "/>
-                                <TextBlock Text="{Binding Path=WifiCollection[0].Bssid}"></TextBlock>
-                            </StackPanel>
-                            <TextBlock Text="{Binding Path=WifiCollection[0].Rssi}"></TextBlock>
-                            <TextBlock Text="{Binding Path=WifiCollection[0].WifiChannel}"></TextBlock>
-
-
+                            <TextBlock FontSize="17" Text="Current network status" HorizontalAlignment="Center" FontWeight="Bold"></TextBlock>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Ssid: "/>
+                                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Path=WifiCollection[0].Ssid}"></TextBlock>
+                                <TextBlock Grid.Row="1" Grid.Column="0" Text="Bssid: "/>
+                                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Path=WifiCollection[0].Bssid}"></TextBlock>
+                                <TextBlock Grid.Row="2" Text="Rssi: "/>
+                                <StackPanel Grid.Row="2" Grid.Column="1"  Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Path=WifiCollection[0].AvailableNetwork.NetworkRssiInDecibelMilliwatts}"></TextBlock>
+                                    <TextBlock Text=" dBm"/>
+                                </StackPanel>
+                                <TextBlock Grid.Row="3" Grid.Column="0" Text="Channel: "/>
+                                <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding Path=WifiCollection[0].Channel}"></TextBlock>
+                            </Grid>
                         </StackPanel>
-                        
-                        <ListView Grid.Row="1" x:Name="DashboardWifiListView" ItemTemplate="{StaticResource WifiItemListViewTemplate}" ItemsSource="{x:Bind WifiCollection}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Top" MaxHeight="256" ScrollViewer.VerticalScrollMode="Enabled">
-                            <ListView.ItemContainerStyle>
-                                <Style TargetType="ListViewItem">
-                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                                </Style>
-                            </ListView.ItemContainerStyle>
-                        </ListView>
-                        <Canvas Grid.Row="2" x:Name="myLittleCanvas" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <StackPanel Grid.Row="1" Orientation="Vertical">
+                            <TextBlock FontSize="17" Text="Available networks" HorizontalAlignment="Center" FontWeight="Bold" Tapped="TextBlockHeader_Tapped"></TextBlock>
+                            <ListView  x:Name="DashboardWifiListView" ItemTemplate="{StaticResource WifiItemListViewTemplate}" ItemsSource="{x:Bind WifiCollection}" HorizontalContentAlignment="Stretch" MaxHeight="256" ScrollViewer.VerticalScrollMode="Enabled">
+                                <ListView.ItemContainerStyle>
+                                    <Style TargetType="ListViewItem">
+                                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                    </Style>
+                                </ListView.ItemContainerStyle>
+                            </ListView>
+                        </StackPanel>
+                        <StackPanel Grid.Row="2" Orientation="Vertical">
+                            <TextBlock FontSize="17" Text="Network charts" HorizontalAlignment="Center" FontWeight="Bold" Tapped="TextBlockHeader_Tapped"></TextBlock>
+                            <Canvas x:Name="myLittleCanvas" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        </StackPanel>
                     </Grid>
 
                 </PivotItem>
