@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Devices.WiFi;
+using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace WiFiVision.Model
@@ -21,6 +22,23 @@ namespace WiFiVision.Model
         public String WifiImagePath { get; set; }
         public String SignalStrength => string.Format("{0} bars ", availableNetwork.SignalBars);
         public String WifiChannel => string.Format("Channel: {0} ", getChannel());
+        public Symbol BarsInSymbol
+        {
+            get {
+                switch (availableNetwork.SignalBars)
+                {
+                    case 0: return Symbol.ZeroBars;
+                    case 1: return Symbol.OneBar;
+                    case 2: return Symbol.TwoBars;
+                    case 3: return Symbol.ThreeBars;
+                    case 4: return Symbol.FourBars;
+                    default: return (availableNetwork.SignalBars > 4) ? Symbol.FourBars : Symbol.ZeroBars;
+                }
+            }
+            set { BarsInSymbol = value; }
+        }
+
+        public bool isCurrentNetwork = false;
 
         private WiFiAvailableNetwork availableNetwork;
         public WiFiAvailableNetwork AvailableNetwork
@@ -64,12 +82,12 @@ namespace WiFiVision.Model
             {
                 connectedSsid = connectedProfile.WlanConnectionProfileDetails.GetConnectedSsid();
             }
-
             if (!string.IsNullOrEmpty(connectedSsid))
             {
                 if (connectedSsid.Equals(AvailableNetwork.Ssid))
                 {
                     connectionLevel = connectedProfile.GetNetworkConnectivityLevel().ToString();
+                    isCurrentNetwork = true;
                 }
             }
             ConnectivityLevel = connectionLevel;

@@ -42,6 +42,10 @@ namespace WiFiVision
             WifiCollection = new ObservableCollection<WifiDataModel>();
 
             ScanForWifi();
+
+            cp = new ChartPlotter(myCanvas, 20, 15, 400, 400);
+
+            cpDashboard = new ChartPlotter(myLittleCanvas, 20, 15, 370, 250);
         }
 
         private async void ScanForWifi()
@@ -57,6 +61,7 @@ namespace WiFiVision
             if (result.Count > 0)
             {
                 Adapter = await WiFiAdapter.FromIdAsync(result[0].Id);
+                var connected = await Adapter.NetworkAdapter.GetConnectedProfileAsync();
             }
             else
             {
@@ -64,20 +69,38 @@ namespace WiFiVision
                 return;
             }
             await Adapter.ScanAsync();
-
+            
             FillWifiCollection(Adapter.NetworkReport);
         }
 
         private async void FillWifiCollection(WiFiNetworkReport networkReport)
         {
-            WifiCollection.Clear();
+            List<WifiDataModel> wifiCollection = new List<WifiDataModel>();
+            List<WifiDataModel> currentWifiCollection = new List<WifiDataModel>();
             for(int i = 0; i < networkReport.AvailableNetworks.Count; ++i)
             {
                 var networkModel = new WifiDataModel(networkReport.AvailableNetworks[i], Adapter);
                 await networkModel.UpdateConnectivity();
-                WifiCollection.Add(networkModel);
+                if (networkModel.isCurrentNetwork)
+                    currentWifiCollection.Add(networkModel);
+                else
+                    wifiCollection.Add(networkModel);
             }
+            currentWifiCollection.Sort(delegate (WifiDataModel x, WifiDataModel y)
+            {
+                if (x.AvailableNetwork.NetworkRssiInDecibelMilliwatts == y.AvailableNetwork.NetworkRssiInDecibelMilliwatts) return 0;
+                else if (x.AvailableNetwork.NetworkRssiInDecibelMilliwatts > y.AvailableNetwork.NetworkRssiInDecibelMilliwatts) return -1;
+                else if (x.AvailableNetwork.NetworkRssiInDecibelMilliwatts < y.AvailableNetwork.NetworkRssiInDecibelMilliwatts) return 1;
+                else return x.AvailableNetwork.NetworkRssiInDecibelMilliwatts.CompareTo(y.AvailableNetwork.NetworkRssiInDecibelMilliwatts);
+            });
 
+            foreach (WifiDataModel o in wifiCollection)
+            {
+                currentWifiCollection.Add(o);
+            }
+            foreach (WifiDataModel o in currentWifiCollection) {
+                WifiCollection.Add(o);
+            }
             drawGraphs(WifiCollection);
         }
 
@@ -86,7 +109,6 @@ namespace WiFiVision
             var bounds = ApplicationView.GetForCurrentView().VisibleBounds;
             var scaleFactor = DisplayInformation.GetForCurrentView().RawPixelsPerViewPixel;
             var size = new Size(bounds.Width * scaleFactor, bounds.Height * scaleFactor);
-
 
             cp = new ChartPlotter(myCanvas, 20, 15, size.Width * 0.95, size.Height * 0.8);
             cp.draw(WifiCollection.ToList());

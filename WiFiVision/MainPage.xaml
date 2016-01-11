@@ -10,7 +10,7 @@
 
     <Page.Resources>
         <DataTemplate x:Key="WifiItemListViewTemplate" x:DataType="wifiItem:WifiDataModel">
-            <Grid HorizontalAlignment="Stretch" >
+            <Grid HorizontalAlignment="Stretch" Margin="5,5,5,5">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="auto" />
@@ -20,8 +20,8 @@
                     <ColumnDefinition Width="7*"/>
                 </Grid.ColumnDefinitions>
                 <!-- Left Side -->
-                <Border Grid.Column="0" Grid.Row="0" Padding="5" VerticalAlignment="top" HorizontalAlignment="Left" BorderThickness="1,1,1,1" BorderBrush="Black">
-                    <!-- <Image Source="{x:Bind WifiImage}" Stretch="UniformToFill"/> -->
+                <Border Grid.Column="0" Grid.Row="0" Padding="5" VerticalAlignment="top" BorderThickness="1,1,1,1" BorderBrush="Black">
+                    <SymbolIcon Symbol="{x:Bind BarsInSymbol}" HorizontalAlignment="Left" />
                 </Border>
                 <Border Grid.Column="0" Grid.Row="1" BorderBrush="Black" BorderThickness="1" Padding="5">
                     <TextBlock Text="{x:Bind SecuritySettings}"></TextBlock>
@@ -59,15 +59,31 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*" />
                             <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-                        <ListView Grid.Row="0" x:Name="DashboardWifiListView" ItemTemplate="{StaticResource WifiItemListViewTemplate}" ItemsSource="{x:Bind WifiCollection}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Top" MaxHeight="256" ScrollViewer.VerticalScrollMode="Enabled">
+                        <StackPanel Grid.Row="0" Orientation="Vertical" Margin="16,4,4,16">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Ssid: "/>
+                                <TextBlock Text="{Binding Path=WifiCollection[0].Ssid}"></TextBlock>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Bssid: "/>
+                                <TextBlock Text="{Binding Path=WifiCollection[0].Bssid}"></TextBlock>
+                            </StackPanel>
+                            <TextBlock Text="{Binding Path=WifiCollection[0].Rssi}"></TextBlock>
+                            <TextBlock Text="{Binding Path=WifiCollection[0].WifiChannel}"></TextBlock>
+
+
+                        </StackPanel>
+                        
+                        <ListView Grid.Row="1" x:Name="DashboardWifiListView" ItemTemplate="{StaticResource WifiItemListViewTemplate}" ItemsSource="{x:Bind WifiCollection}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Top" MaxHeight="256" ScrollViewer.VerticalScrollMode="Enabled">
                             <ListView.ItemContainerStyle>
                                 <Style TargetType="ListViewItem">
                                     <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                                 </Style>
                             </ListView.ItemContainerStyle>
                         </ListView>
-                        <Canvas Grid.Row="1" x:Name="myLittleCanvas" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <Canvas Grid.Row="2" x:Name="myLittleCanvas" HorizontalAlignment="Left" VerticalAlignment="Top" />
                     </Grid>
 
                 </PivotItem>
