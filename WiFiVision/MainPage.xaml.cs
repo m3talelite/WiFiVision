@@ -45,8 +45,8 @@ namespace WiFiVision
             var bounds = ApplicationView.GetForCurrentView().VisibleBounds;
             var scaleFactor = DisplayInformation.GetForCurrentView().RawPixelsPerViewPixel;
             this.size = new Size(bounds.Width * scaleFactor, bounds.Height * scaleFactor);
-            
-            WifiListView.MaxHeight = size.Height * 0.3 * 0.8;
+
+            DashboardWifiListView.MaxHeight = size.Height * 0.3 * 0.6;
 
             WifiCollection = new ObservableCollection<WifiDataModel>();
             
@@ -111,10 +111,14 @@ namespace WiFiVision
 
         private async void drawGraphs(ObservableCollection<WifiDataModel> WifiCollection)
         {
-            cp = new ChartPlotter(myCanvas, 20, 15, size.Width * 0.95, size.Height * 0.8);
+            var bounds = ApplicationView.GetForCurrentView().VisibleBounds;
+            var scaleFactor = DisplayInformation.GetForCurrentView().RawPixelsPerViewPixel;
+            var size = new Size(bounds.Width * scaleFactor, bounds.Height * scaleFactor);
+
+            cp = new ChartPlotter(myCanvas, 20, 15, size.Width * 0.7, size.Height * 0.65);
             cp.draw(WifiCollection.ToList());
 
-            cpDashboard = new ChartPlotter(myLittleCanvas, 20, 15, size.Width * 0.85, size.Height / 3);
+            cpDashboard = new ChartPlotter(myLittleCanvas, 20, 15, size.Width * 0.7, size.Height * 0.3 * 0.6);
             cpDashboard.draw(WifiCollection.ToList());
         }
 
