@@ -66,6 +66,10 @@ namespace WiFiVision
             drawLine(new Point(x + this.width, y + this.height), new Point(x, y + this.height), lt, color);
             drawLine(new Point(x, y + this.height), new Point(x, y), lt, color);
 
+            Point p = new Point();
+            p.X = x - 30;
+            p.Y = y + this.height;
+
             for (int i = 30; i < 100; i += 10)
             {
                 //draw amplines
@@ -105,7 +109,27 @@ namespace WiFiVision
                 Canvas.SetTop(textBlock, channelNumberPoint.Y - 10);
 
                 this.activeCanvas.Children.Add(textBlock);
+
+                if (1 == i)
+                {
+                    TextBlock channeltb = new TextBlock();
+                    channeltb.Text = "Channel";
+                    double guestimatedChannelLabelWidth = 7 * channeltb.ToString().Length;
+                    Canvas.SetLeft(channeltb, channelNumberPoint.X - guestimatedChannelLabelWidth / 2);
+                    Canvas.SetTop(channeltb, channelNumberPoint.Y - 10);
+                    this.activeCanvas.Children.Add(channeltb);
+                }
             }
+
+            TextBlock tb = new TextBlock();
+            tb.Text = "dBm";
+            RotateTransform rt = new RotateTransform();
+            rt.Angle = -90;
+            tb.RenderTransform = rt;
+            Canvas.SetLeft(tb, p.X);
+            Canvas.SetTop(tb, p.Y);
+            this.activeCanvas.Children.Add(tb);
+
         }
 
         private void drawLine(Point point1, Point point2, int lineThickness, Color strokeColor)
