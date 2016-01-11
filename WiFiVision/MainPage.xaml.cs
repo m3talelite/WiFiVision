@@ -31,6 +31,7 @@ namespace WiFiVision
         public ObservableCollection<WifiDataModel> WifiCollection { get; private set; }
 
         ChartPlotter cp;
+        ChartPlotter cpDashboard;
 
         public MainPage()
         {
@@ -40,7 +41,9 @@ namespace WiFiVision
 
             ScanForWifi();
 
-            cp = new ChartPlotter(myCanvas, 15, 15, 400, 400);
+            cp = new ChartPlotter(myCanvas, 20, 15, 400, 400);
+
+            cpDashboard = new ChartPlotter(myLittleCanvas, 20, 15, 370, 250);
         }
 
         private async void ScanForWifi()

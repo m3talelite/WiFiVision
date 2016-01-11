@@ -24,7 +24,7 @@ namespace WiFiVision
         int chartBoxLineThickness = 2;
         Color chartboxLineColor = Colors.Black;
 
-        Color[] notRandomColors = { Colors.Red, Colors.Blue, Colors.Green, Colors.Khaki, Colors.Ivory, Colors.MediumTurquoise, Colors.Tomato, Colors.Tan };
+        Color[] notRandomColors = { Colors.Red, Colors.Blue, Colors.Green, Colors.Khaki, Colors.Teal, Colors.MediumTurquoise, Colors.Tomato, Colors.Tan };
 
         public ChartPlotter(Canvas activeCanvas, double x, double y, double width, double height)
         {
@@ -209,6 +209,7 @@ namespace WiFiVision
             if (curveTop.Y < this.x)
             {
                 curveTop.Y = this.x;
+                curveTop.X += 15;
             }
 
             Canvas.SetLeft(textBlock, curveTop.X);
