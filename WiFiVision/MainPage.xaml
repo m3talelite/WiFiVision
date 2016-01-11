@@ -16,8 +16,8 @@
                     <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="7*"/>
                 </Grid.ColumnDefinitions>
                 <!-- Left Side -->
                 <Border Grid.Column="0" Grid.Row="0" Padding="5" VerticalAlignment="top" HorizontalAlignment="Left" BorderThickness="1,1,1,1" BorderBrush="Black">
@@ -37,7 +37,10 @@
                     </StackPanel>
                 </Border>
                 <Border Grid.Column="1" Grid.Row="1" BorderBrush="Black" Padding="5" BorderThickness="1">
-                    <TextBlock Text="{x:Bind SignalStrength}"/> 
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{x:Bind WifiChannel}"/>
+                        <TextBlock Text="{x:Bind Rssi}" Padding="8,0,0,0"/>
+                    </StackPanel>
                 </Border>
                 <!-- End of Right Side -->
             </Grid>
@@ -51,17 +54,28 @@
                     <PivotItem.Header>
                         <local:PivotHeader TabText="Dashboard" TabSymbol="Admin"/>
                     </PivotItem.Header>
+                    <!-- Dashboard -->
                     <Grid>
-                        <RelativePanel x:Name="dashboardPanel" HorizontalAlignment="Left" VerticalAlignment="Top">
-                            <Canvas x:Name="myLittleCanvas" HorizontalAlignment="Left" VerticalAlignment="Top" Width="{Binding ActualWidth, ElementName=dashboardPanel}"/>
-                            <ListView x:Name="listView" HorizontalAlignment="Left" Height="0" VerticalAlignment="Top"/>
-                        </RelativePanel>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <ListView Grid.Row="0" x:Name="DashboardWifiListView" ItemTemplate="{StaticResource WifiItemListViewTemplate}" ItemsSource="{x:Bind WifiCollection}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Top" MaxHeight="256" ScrollViewer.VerticalScrollMode="Enabled">
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                        </ListView>
+                        <Canvas Grid.Row="1" x:Name="myLittleCanvas" HorizontalAlignment="Left" VerticalAlignment="Top" />
                     </Grid>
+
                 </PivotItem>
                 <PivotItem>
                     <PivotItem.Header>
-                        <local:PivotHeader TabText="Graph" TabSymbol="SlideShow"/>
+                        <local:PivotHeader TabText="Graph" TabSymbol="ViewAll"/>
                     </PivotItem.Header>
+                    <!-- Graphs -->
                     <Grid>
                         <TextBlock x:Name="textBlock" HorizontalAlignment="Center" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Bottom"/>
                         <Canvas x:Name="myCanvas"  Margin="0,0,0,40"/>
@@ -71,6 +85,7 @@
                     <PivotItem.Header>
                         <local:PivotHeader TabText="List" TabSymbol="List"/>
                     </PivotItem.Header>
+                    <!-- List view -->
                     <StackPanel Orientation="Vertical">
                         <!--<Grid/> Not sure why this is here -->
                         <ListView x:Name="WifiListView" ItemTemplate="{StaticResource WifiItemListViewTemplate}" ItemsSource="{x:Bind WifiCollection}" HorizontalContentAlignment="Stretch" >

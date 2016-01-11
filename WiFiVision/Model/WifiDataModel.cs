@@ -11,14 +11,16 @@ namespace WiFiVision.Model
     public class WifiDataModel
     {
         private WiFiAdapter adapter;
-        public String Ssid => string.Format("{0}", availableNetwork.Ssid);
-        public String Bssid => string.Format("{0}", availableNetwork.Bssid);
-        public String ChannelCenterFrequency => string.Format("{0}kHz", availableNetwork.ChannelCenterFrequencyInKilohertz);
-        public String Rssi => string.Format("{0}dBm", availableNetwork.NetworkRssiInDecibelMilliwatts);
+        public String Ssid => string.Format("{0} ", availableNetwork.Ssid);
+        public String Bssid => string.Format("{0} ", availableNetwork.Bssid);
+        public String ChannelCenterFrequency => string.Format("{0}kHz ", availableNetwork.ChannelCenterFrequencyInKilohertz);
+        public String Rssi => string.Format("Strength: {0} dBm ", availableNetwork.NetworkRssiInDecibelMilliwatts);
         public String SecuritySettings => string.Format("Auth: {0}", availableNetwork.SecuritySettings.NetworkAuthenticationType, availableNetwork.SecuritySettings.NetworkEncryptionType);
         public String ConnectivityLevel { get; set; }
         public BitmapImage WiFiImage { get; set; }
-        public String SignalStrength => string.Format("{0} dB", availableNetwork.NetworkRssiInDecibelMilliwatts);
+        public String WifiImagePath { get; set; }
+        public String SignalStrength => string.Format("{0} bars ", availableNetwork.SignalBars);
+        public String WifiChannel => string.Format("Channel: {0} ", getChannel());
 
         private WiFiAvailableNetwork availableNetwork;
         public WiFiAvailableNetwork AvailableNetwork
