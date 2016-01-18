@@ -22,7 +22,7 @@ namespace WiFiVision
         int channelSpaces = 16;
 
         int chartBoxLineThickness = 2;
-        Color chartboxLineColor = Colors.Black;
+        Color chartboxLineColor = Colors.Gray;
 
         Color[] notRandomColors = { Colors.Red, Colors.Blue, Colors.Green, Colors.Khaki, Colors.Teal, Colors.MediumTurquoise, Colors.Tomato, Colors.Tan };
         int colorIndex = 0;
@@ -101,7 +101,7 @@ namespace WiFiVision
                 //drawing of channel number numberline number
                 Point startPoint = new Point(x + offset + (channelWidth) * i, y + this.height);
                 Point endPoint = new Point(startPoint.X, startPoint.Y + 10);
-                drawLine(startPoint, endPoint, 1, Colors.Black);
+                drawLine(startPoint, endPoint, 1, this.chartboxLineColor);
 
                 //drawing of channel number
                 Point channelNumberPoint = new Point(x + offset + (channelWidth) * i, y + this.height + 20);
